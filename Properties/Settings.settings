@@ -11,5 +11,11 @@
     <Setting Name="VerticalScale" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="LowerBoundYear" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1976</Value>
+    </Setting>
+    <Setting Name="UpperBoundYear" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2024</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

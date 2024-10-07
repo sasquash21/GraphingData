@@ -58,5 +58,29 @@ namespace GraphingData.Properties {
                 this["VerticalScale"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1976")]
+        public int LowerBoundYear {
+            get {
+                return ((int)(this["LowerBoundYear"]));
+            }
+            set {
+                this["LowerBoundYear"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2024")]
+        public int UpperBoundYear {
+            get {
+                return ((int)(this["UpperBoundYear"]));
+            }
+            set {
+                this["UpperBoundYear"] = value;
+            }
+        }
     }
 }

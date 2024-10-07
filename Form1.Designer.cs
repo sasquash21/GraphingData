@@ -48,8 +48,15 @@
             label2 = new Label();
             groupBox2 = new GroupBox();
             buttonUndo = new Button();
+            groupBox3 = new GroupBox();
+            label3 = new Label();
+            numericUpDownUpperYear = new NumericUpDown();
+            numericUpDownLowerYear = new NumericUpDown();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownUpperYear).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownLowerYear).BeginInit();
             SuspendLayout();
             // 
             // plotView
@@ -66,13 +73,13 @@
             // 
             // checkedListBoxStates
             // 
+            checkedListBoxStates.CheckOnClick = true;
             checkedListBoxStates.FormattingEnabled = true;
             checkedListBoxStates.Location = new Point(13, 16);
             checkedListBoxStates.Margin = new Padding(4, 3, 4, 3);
             checkedListBoxStates.Name = "checkedListBoxStates";
             checkedListBoxStates.Size = new Size(170, 166);
             checkedListBoxStates.TabIndex = 1;
-            checkedListBoxStates.CheckOnClick = true;
             // 
             // buttonRedraw
             // 
@@ -125,9 +132,9 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(textBoxVerticalScale);
             groupBox1.Controls.Add(textBoxHorizontalScale);
-            groupBox1.Location = new Point(208, 523);
+            groupBox1.Location = new Point(583, 523);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(187, 203);
+            groupBox1.Size = new Size(170, 136);
             groupBox1.TabIndex = 5;
             groupBox1.TabStop = false;
             groupBox1.Text = "Axes Scaler";
@@ -151,7 +158,7 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Select States";
             // 
-            // UndoButton
+            // buttonUndo
             // 
             buttonUndo.Location = new Point(537, 674);
             buttonUndo.Name = "buttonUndo";
@@ -161,11 +168,53 @@
             buttonUndo.UseVisualStyleBackColor = true;
             buttonUndo.Click += buttonUndo_Click;
             // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(label3);
+            groupBox3.Controls.Add(numericUpDownUpperYear);
+            groupBox3.Controls.Add(numericUpDownLowerYear);
+            groupBox3.Location = new Point(220, 523);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(211, 203);
+            groupBox3.TabIndex = 8;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Axes Ranges";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(11, 42);
+            label3.Name = "label3";
+            label3.Size = new Size(65, 15);
+            label3.TabIndex = 2;
+            label3.Text = "Year Range";
+            // 
+            // numericUpDownUpperYear
+            // 
+            numericUpDownUpperYear.Location = new Point(105, 60);
+            numericUpDownUpperYear.Maximum = new decimal(new int[] { 2024, 0, 0, 0 });
+            numericUpDownUpperYear.Minimum = new decimal(new int[] { 1976, 0, 0, 0 });
+            numericUpDownUpperYear.Name = "numericUpDownUpperYear";
+            numericUpDownUpperYear.Size = new Size(75, 23);
+            numericUpDownUpperYear.TabIndex = 1;
+            numericUpDownUpperYear.Value = new decimal(new int[] { 2024, 0, 0, 0 });
+            // 
+            // numericUpDownLowerYear
+            // 
+            numericUpDownLowerYear.Location = new Point(11, 60);
+            numericUpDownLowerYear.Maximum = new decimal(new int[] { 2024, 0, 0, 0 });
+            numericUpDownLowerYear.Minimum = new decimal(new int[] { 1976, 0, 0, 0 });
+            numericUpDownLowerYear.Name = "numericUpDownLowerYear";
+            numericUpDownLowerYear.Size = new Size(75, 23);
+            numericUpDownLowerYear.TabIndex = 0;
+            numericUpDownLowerYear.Value = new decimal(new int[] { 1976, 0, 0, 0 });
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1114, 727);
+            Controls.Add(groupBox3);
             Controls.Add(buttonUndo);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -180,6 +229,10 @@
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownUpperYear).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownLowerYear).EndInit();
             ResumeLayout(false);
         }
 
@@ -189,5 +242,9 @@
         private GroupBox groupBox1;
         private Label label2;
         private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private NumericUpDown numericUpDownLowerYear;
+        private NumericUpDown numericUpDownUpperYear;
+        private Label label3;
     }
 }

@@ -24,13 +24,15 @@ namespace GraphingData
         public List<string> SelectedStates { get; set; }
         public string HorizontalScale { get; set; }
         public string VerticalScale { get; set; }
+        public int LowerBoundYear { get; set; }
+        public int UpperBoundYear { get; set; }
     }
     public partial class Form1 : Form
     {
 
         private OxyPlot.PlotModel plotModel;
         private DataTable unemploymentData;
-         
+
         public Form1()
         {
             InitializeComponent();
@@ -64,9 +66,9 @@ namespace GraphingData
                         unemploymentData.Rows.Add(row);
                     }
 
-                    foreach(DataColumn col in unemploymentData.Columns)
+                    foreach (DataColumn col in unemploymentData.Columns)
                     {
-                        if(col.ColumnName != "year" && col.ColumnName != "month")
+                        if (col.ColumnName != "year" && col.ColumnName != "month")
                         {
                             checkedListBoxStates.Items.Add(col.ColumnName);
                         }
@@ -114,10 +116,10 @@ namespace GraphingData
         }
 
         //Redraw the plot button after putting in the necessary graph settings for axes and selected states
-        private void RedrawPlot(List<string> selectedStates)
+        private void RedrawPlot(List<string> selectedStates, int lowerYear, int upperYear)
         {
             plotModel.Series.Clear(); // Clear existing series
-            
+
             //Adding the Legend each time Redraw is called.  Used for PNG images.
             plotModel.Legends.Add(new Legend()
             {
@@ -126,14 +128,20 @@ namespace GraphingData
                 LegendPlacement = LegendPlacement.Outside,
                 LegendOrientation = LegendOrientation.Vertical,
             });
-            
+
             foreach (var state in selectedStates)
             {
-                var series = new LineSeries {Title = state};
+                var series = new LineSeries { Title = state };
 
                 foreach (DataRow row in unemploymentData.Rows)
                 {
                     var year = int.Parse(row["year"].ToString());
+
+                    //Skips years outside selected range
+                    if (year < lowerYear || year > upperYear)
+                    {
+                        continue;
+                    }
                     var month = int.Parse(row["month"].ToString());
                     var date = new DateTime(year, month, 1); // Construct the date from year and month
 
@@ -154,12 +162,22 @@ namespace GraphingData
         {
             var selectedStates = checkedListBoxStates.CheckedItems.Cast<string>().ToList();
 
-            if(selectedStates.Count > 0)
+            if (selectedStates.Count > 0)
             {
-                RedrawPlot(selectedStates);
+                int lowerBound = (int)numericUpDownLowerYear.Value;
+                int upperBound = (int)numericUpDownUpperYear.Value;
+
+                // Ensure that the lower bound is not greater than the upper bound
+                if (lowerBound > upperBound)
+                {
+                    MessageBox.Show("Lower bound cannot be greater than the upper bound. Please adjust your values.");
+                    return;
+                }
+
+                AdjustScales();
+                CurrentGraphState();
+                RedrawPlot(selectedStates, lowerBound, upperBound);
             }
-            AdjustScales();
-            CurrentGraphState();
         }
 
         //Button for saving the image
@@ -179,7 +197,7 @@ namespace GraphingData
         }
 
         //This function sets the axes scales
-        private void AdjustScales() 
+        private void AdjustScales()
         {
 
             //If no input in horizontal or vertical scaler text boxes then we want to autoscale
@@ -214,12 +232,14 @@ namespace GraphingData
             plotModel.InvalidatePlot(true);
         }
 
-        //Saves the current state of the UI through windows Forms Settings in Properties
+        //Saves the current state of the UI through Windows Forms Settings in Properties
         private void SaveSettings()
         {
             //Save selectedStates
             var selectedStates = string.Join(",", checkedListBoxStates.CheckedItems.Cast<string>());
             Properties.Settings.Default.SelectedStates = selectedStates;
+            Properties.Settings.Default.LowerBoundYear = (int)numericUpDownLowerYear.Value;
+            Properties.Settings.Default.UpperBoundYear = (int)numericUpDownUpperYear.Value;
 
             //Save Horizontal Scale
             if (int.TryParse(textBoxHorizontalScale.Text, out int horizontalScale))
@@ -256,6 +276,9 @@ namespace GraphingData
             // Load horizontal and vertical scales
             textBoxHorizontalScale.Text = Properties.Settings.Default.HorizontalScale.ToString();
             textBoxVerticalScale.Text = Properties.Settings.Default.VerticalScale.ToString();
+            // Load lower and upper year bounds
+            numericUpDownLowerYear.Value = Properties.Settings.Default.LowerBoundYear;
+            numericUpDownUpperYear.Value = Properties.Settings.Default.UpperBoundYear;
         }
 
         //Performs the the load settings function when the application is opened by user
@@ -287,6 +310,8 @@ namespace GraphingData
                 SelectedStates = checkedListBoxStates.CheckedItems.Cast<string>().ToList(),
                 HorizontalScale = textBoxHorizontalScale.Text,
                 VerticalScale = textBoxVerticalScale.Text,
+                LowerBoundYear = (int)numericUpDownLowerYear.Value,
+                UpperBoundYear = (int)numericUpDownUpperYear.Value,
             };
 
             undoStack.Push(currentState);
@@ -303,7 +328,10 @@ namespace GraphingData
             textBoxHorizontalScale.Text = state.HorizontalScale;
             textBoxVerticalScale.Text = state.VerticalScale;
 
-            RedrawPlot(state.SelectedStates);
+            numericUpDownLowerYear.Value = state.LowerBoundYear;
+            numericUpDownUpperYear.Value = state.UpperBoundYear;
+
+            RedrawPlot(state.SelectedStates, state.LowerBoundYear, state.UpperBoundYear);
         }
 
         //Calls on RestoreState to pop stack and restore previous states

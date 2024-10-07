@@ -14,6 +14,7 @@ This project required a combination of new and past experiences, including:
   
 - **GUI Elements**: 
   - A `CheckedListBox` was used to list all 50 states, along with LA County and New York City.
+  - Numeric up and down boxes were provided for x axis ranges to allow users to view data for specific years (new). 
   - Text input boxes were provided for vertical and horizontal scalers to allow users to customize the graph.
 
 ## Key Features
